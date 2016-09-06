@@ -12,7 +12,7 @@ from point_api import Point
 #   C. Python v3.0
 # Fill in your answer in the next line of code ("A", "B", or "C"):
 
-ANSWER_1 = None
+ANSWER_1 = ""
 
 
 #### Warm-up: Exponentiation ###################################################
