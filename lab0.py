@@ -30,7 +30,8 @@ def fibonacci(n):
 
 def expression_depth(expr):
     """Given an expression expressed as Python lists and tuples, uses recursion
-    to return the depth of the expression."""
+    to return the depth of the expression, where depth is defined by the maximum
+    number of nested operations."""
     raise NotImplementedError
 
 
