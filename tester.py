@@ -248,8 +248,9 @@ def test_online(verbosity=1):
             print "if you use the version of Python in the 'python' locker."
             sys.exit(0)
     except xmlrpclib.Fault:
-        print "\nNote: Online tests for " + lab.__name__ + " are not currently available."
-        print "If you believe this is an error, please contact a TA.\n"
+        print "\nError: Either your key.py file is out of date, or online "
+        print "tests for " + lab.__name__ + " are not currently available."
+        print "If you believe this is may be a mistake, please contact a TA.\n"
         sys.exit(0)
     ntests = len(tests)
     ncorrect = 0
