@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 # MIT 6.034 Lab 0: Getting Started
 
 import xmlrpclib
