@@ -144,14 +144,6 @@ def run_test(test, lab):
 def test_offline(verbosity=1):
     """ Run the unit tests in 'tests.py' """
     import tests as tests_module
-
-#    tests = [ (x[:-8],
-#               getattr(tests_module, x),
-#               getattr(tests_module, "%s_testanswer" % x[:-8]),
-#               getattr(tests_module, "%s_expected" % x[:-8]),
-#               "_".join(x[:-8].split('_')[:-1]))
-#              for x in tests_module.__dict__.keys() if x[-8:] == "_getargs" ]
-
     tests = tests_module.get_tests()
 
     ntests = len(tests)
@@ -254,6 +246,7 @@ def test_online(verbosity=1):
         print "tests for " + lab.__name__ + " are not currently available."
         print "If you believe this is may be a mistake, please contact a TA.\n"
         sys.exit(0)
+
     ntests = len(tests)
     ncorrect = 0
 
@@ -324,4 +317,3 @@ if __name__ == '__main__':
             test_online()
         else:
             print "Local tests passed! Run 'python %s submit' to submit your code and have it graded." % sys.argv[0]
-
