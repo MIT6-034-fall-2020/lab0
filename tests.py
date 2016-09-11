@@ -46,9 +46,9 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = "-125",
           name = 'cube')
 
-cube_3_arg = []
+cube_3_arg = [-1]
 def cube_3_getargs():  #TEST 5
-    cube_3_arg.append(random.randint(1,1000))
+    cube_3_arg[0] = random.randint(1,1000)
     return cube_3_arg
 def cube_3_testanswer(val, original_val = None):
     return val == cube_3_arg[0]**3
