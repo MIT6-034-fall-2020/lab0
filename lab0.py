@@ -29,9 +29,9 @@ def fibonacci(n):
     raise NotImplementedError
 
 def expression_depth(expr):
-    """Given an expression expressed as Python lists and tuples, uses recursion
-    to return the depth of the expression, where depth is defined by the maximum
-    number of nested operations."""
+    """Given an expression expressed as Python lists, uses recursion to return
+    the depth of the expression, where depth is defined by the maximum number of
+    nested operations."""
     raise NotImplementedError
 
 

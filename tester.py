@@ -14,9 +14,8 @@ except ImportError:
     from StringIO import StringIO
 
 try:
-    sys.path.insert(0,'..')
+    sys.path.append('..')
     from key import USERNAME as username, PASSWORD as password, XMLRPC_URL as server_url
-    sys.path.pop(0) #reset path
 except ImportError:
     print "Error: Can't find your 'key.py' file!  Please go download one from"
     print "<https://ai6034.mit.edu/labs/key.py>"
