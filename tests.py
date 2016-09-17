@@ -7,6 +7,8 @@ random.seed() # Change to "random.seed(n)" to make the random tests always retur
 
 ANSWER_1_getargs = 'ANSWER_1'  #TEST 1
 def ANSWER_1_testanswer(val, original_val = None):
+    if val == '':
+        raise NotImplementedError
     return val == 'B'
 make_test(type = 'VALUE',
           getargs = ANSWER_1_getargs,
@@ -371,6 +373,8 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 PYTHON_EXPERIENCE_getargs = 'PYTHON_EXPERIENCE'  #TEST 32
 def PYTHON_EXPERIENCE_testanswer(val, original_val = None):
+    if val == '':
+        raise NotImplementedError
     return val in list("ABCDE")
 make_test(type = 'VALUE',
           getargs = PYTHON_EXPERIENCE_getargs,
@@ -380,6 +384,8 @@ make_test(type = 'VALUE',
 
 PROGRAMMING_EXPERIENCE_getargs = 'PROGRAMMING_EXPERIENCE'  #TEST 33
 def PROGRAMMING_EXPERIENCE_testanswer(val, original_val = None):
+    if val == '':
+        raise NotImplementedError
     return val in list("ABCDE")
 make_test(type = 'VALUE',
           getargs = PROGRAMMING_EXPERIENCE_getargs,
@@ -389,6 +395,8 @@ make_test(type = 'VALUE',
 
 NAME_getargs = 'NAME'  #TEST 34
 def NAME_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
     return ( isinstance(val, str) and val != '')
 make_test(type = 'VALUE',
           getargs = NAME_getargs,
@@ -398,6 +406,8 @@ make_test(type = 'VALUE',
 
 COLLABORATORS_getargs = 'COLLABORATORS'  #TEST 35
 def COLLABORATORS_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
     return isinstance(val, str)
 make_test(type = 'VALUE',
           getargs = COLLABORATORS_getargs,
@@ -408,6 +418,8 @@ make_test(type = 'VALUE',
 
 HOW_MANY_HOURS_THIS_LAB_TOOK_getargs = 'HOW_MANY_HOURS_THIS_LAB_TOOK'  #TEST 36
 def HOW_MANY_HOURS_THIS_LAB_TOOK_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
     return isinstance(val, (int, float, str)) and val != ''
 make_test(type = 'VALUE',
           getargs = HOW_MANY_HOURS_THIS_LAB_TOOK_getargs,

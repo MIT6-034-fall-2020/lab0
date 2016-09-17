@@ -169,7 +169,12 @@ def test_offline(verbosity=1):
         # incorrect, testanswer returns False instead of raising an exception.
         try:
             correct = testanswer(answer)
-        except:
+        except NotImplementedError:
+            print "%d: (%s: No answer given, NotImplementedError raised)" % (dispindex, testname)
+            continue
+        except (KeyboardInterrupt, SystemExit): # Allow user to interrupt tester
+            raise
+        except Exception:
             correct = False
         show_result(summary, testname, correct, answer, expected, verbosity)
         if correct: ncorrect += 1
