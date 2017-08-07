@@ -10,6 +10,8 @@ class Point(object):
         self._y = y
         # secret ID to differentiate between newly created Points and copies of an original
         self.ID = "_".join(map(str, [time.time(), x, y]))
+        # True if this point was created using "Point(...)" or was copied from such a point
+        self._constructed = True
 
     def getX(self):
         return self._x
@@ -26,14 +28,24 @@ class Point(object):
         return self
 
     def copy(self):
-        return deepcopy(self)
+        copy = deepcopy(self)
+        copy.ID = "_".join(map(str, [time.time(), self._x, self._y]))
+        return copy
 
-    def __eq__(self, other):
+    def coords_equal(self, other):
         try:
-            return (self._x == other._x and self._y == other._y
-                    and self.ID == other.ID)
+            return (self._x == other._x and self._y == other._y)
         except:
             return False
+
+    def identical(self, other):
+        try:
+            return self.coords_equal(other) and self.ID == other.ID
+        except:
+            return False
+
+    def __eq__(self, other):
+        return self.coords_equal(other)
 
     def __str__(self):
         return "Point(%s, %s)" % (str(self._x), str(self._y))
