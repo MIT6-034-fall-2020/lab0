@@ -54,6 +54,7 @@ def primes_up_to(x):
 def fibonacci(n):
     "Given a positive int n, uses recursion to return the nth Fibonacci number."
     raise NotImplementedError
+
 def expression_depth(expr):
     """Given an expression expressed as Python lists, uses recursion to return
     the depth of the expression, where depth is defined by the maximum number of

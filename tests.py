@@ -112,7 +112,7 @@ make_test(type = "FUNCTION_ENCODED_ARGS",
 def decrement_2_getargs():  #TEST 10
     return [-1.5]
 def decrement_2_testanswer(val, original_val = None):
-    return val == 0
+    return approx_equal(val, 0)
 make_test(type = "FUNCTION_ENCODED_ARGS",
           getargs = decrement_2_getargs,
           testanswer = decrement_2_testanswer,
@@ -122,7 +122,7 @@ make_test(type = "FUNCTION_ENCODED_ARGS",
 def cube_0_getargs():  #TEST 11
     return [10]
 def cube_0_testanswer(val, original_val = None):
-    return val == 1000
+    return approx_equal(val, 1000)
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = cube_0_getargs,
           testanswer = cube_0_testanswer,
@@ -132,7 +132,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 def cube_1_getargs():  #TEST 12
     return [1]
 def cube_1_testanswer(val, original_val = None):
-    return val == 1
+    return approx_equal(val, 1)
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = cube_1_getargs,
           testanswer = cube_1_testanswer,
@@ -142,7 +142,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 def cube_2_getargs():  #TEST 13
     return [-5]
 def cube_2_testanswer(val, original_val = None):
-    return val == -125
+    return approx_equal(val, -125)
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = cube_2_getargs,
           testanswer = cube_2_testanswer,
@@ -154,7 +154,7 @@ def cube_3_getargs():  #TEST 14
     cube_3_arg[0] = random.randint(1,1000)
     return cube_3_arg
 def cube_3_testanswer(val, original_val = None):
-    return val == cube_3_arg[0]**3
+    return approx_equal(val, cube_3_arg[0]**3)
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = cube_3_getargs,
           testanswer = cube_3_testanswer,
@@ -643,7 +643,8 @@ def get_neighbors_0_testanswer(val, original_val = None):
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = get_neighbors_0_getargs,
           testanswer = get_neighbors_0_testanswer,
-          expected_val = str(get_neighbors_0_expected) + " (any order)",
+          expected_val = (str(get_neighbors_0_expected) + " (any order).\n"
+            "Be sure not to call Point(__) directly or mutate the input!"),
           name = 'get_neighbors')
 
 get_neighbors_1_input = point_B.copy()
@@ -659,7 +660,8 @@ def get_neighbors_1_testanswer(val, original_val = None):
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = get_neighbors_1_getargs,
           testanswer = get_neighbors_1_testanswer,
-          expected_val = str(get_neighbors_1_expected) + " (any order)",
+          expected_val = (str(get_neighbors_1_expected) + " (any order).\n"
+            "Be sure not to call Point(__) directly or mutate the input!"),
           name = 'get_neighbors')
 
 get_neighbors_2_input = point_C.copy()
@@ -675,7 +677,8 @@ def get_neighbors_2_testanswer(val, original_val = None):
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = get_neighbors_2_getargs,
           testanswer = get_neighbors_2_testanswer,
-          expected_val = str(get_neighbors_2_expected) + " (any order)",
+          expected_val = (str(get_neighbors_2_expected) + " (any order).\n"
+            "Be sure not to call Point(__) directly or mutate the input!"),
           name = 'get_neighbors')
 
 
