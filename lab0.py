@@ -22,6 +22,13 @@ ANSWER_1 = None
 ANSWER_2 = ""
 
 
+################################################################################
+# Note: Each function we require you to fill in has brief documentation        # 
+# describing what the function should input and output. For more detailed      # 
+# instructions, check out the lab 0 wiki page!                                 #
+################################################################################
+
+
 #### Warmup ####################################################################
 
 def is_even(x):
