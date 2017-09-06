@@ -2,14 +2,23 @@
 
 # MIT 6.034 Lab 0: Getting Started
 
+import xmlrpc.client
 import traceback
 import sys
+import os
+import tarfile
+
+from io import BytesIO
 
 python_version = sys.version_info
 is_windows = sys.platform in ["win32", "cygwin"]
 if python_version.major != 3:
     raise Exception("Illegal version of Python for 6.034 lab. Detected Python "
                     + "version is: " + str(sys.version))
+if python_version.minor == 5 and python_version.micro <= 1:
+    raise Exception("Illegal version of Python; versions 3.5.0 and 3.5.1 are disallowed "
+                    + "due to bugs in their XMLRPC libraries. Detected version is: "
+                    + str(sys.version))
 
 def test_summary(dispindex, ntests):
     return "Test %d/%d" % (dispindex, ntests)
@@ -173,9 +182,155 @@ def test_offline(verbosity=1):
     print("Passed %d of %d tests." % (ncorrect, ntests))
     return ncorrect == ntests
 
+
+def get_target_upload_filedir():
+    """ Get, via user prompting, the directory containing the current lab """
+    cwd = os.getcwd() # Get current directory.  Play nice with Unicode pathnames, just in case.
+
+    print("Please specify the directory containing your lab,")
+    print("or press Enter to use the default directory.")
+    print("Note that all files from this directory will be uploaded!")
+    print("Labs should not contain large amounts of data; very large")
+    print("files will fail to upload.")
+    print()
+    print("The default directory is '%s'" % cwd)
+    target_dir = input("[%s] >>> " % cwd)
+
+    target_dir = target_dir.strip()
+    if target_dir == '':
+        target_dir = cwd
+
+    print("Ok, using '%s'." % target_dir)
+
+    return target_dir
+
+def get_tarball_data(target_dir, filename):
+    """ Return a binary String containing the binary data for a tarball of the specified directory """
+    print("Preparing the lab directory for transmission...")
+
+    data = BytesIO()
+    tar = tarfile.open(filename, "w|bz2", data)
+
+    top_folder_name = os.path.split(target_dir)[1]
+
+    def tar_filter(filename):
+        """Returns True if we should tar the file.
+        Avoid uploading .pyc files or the .git subdirectory (if any)"""
+        if filename in [".git",".DS_Store","__pycache__"]:
+            return False
+        if os.path.splitext(filename)[1] == ".pyc":
+            return False
+        return True
+
+    def add_dir(currentDir, t_verbose=False):
+        for currentFile in os.listdir(currentDir):
+            fullPath=os.path.join(currentDir,currentFile)
+            if t_verbose:
+                print(currentFile, end=' ')
+            if tar_filter(currentFile):
+                if t_verbose:
+                    print("")
+                tar.add(fullPath,arcname=fullPath.replace(target_dir, top_folder_name,1),recursive=False)
+                if os.path.isdir(fullPath):
+                    add_dir(fullPath)
+            elif t_verbose:
+                print("....skipped")
+
+    add_dir(target_dir)
+
+    print("Done.")
+    print()
+    print("The following files will be uploaded:")
+
+    for f in tar.getmembers():
+        print(" - {}".format(f.name))
+
+    tar.close()
+
+    return data.getvalue()
+
+
 def test_online(verbosity=1):
-    print("Online submission for lab0 will not be enabled until the semester begins.")
-    sys.exit(0)
+    """ Run online unit tests.  Run them against the 6.034 server via XMLRPC. """
+    lab = get_lab_module()
+
+    try:
+        sys.path.append('..')
+        from key import USERNAME as username, PASSWORD as password, XMLRPC_URL as server_url
+    except ImportError:
+        print("Error: Can't find your 'key.py' file!  Please go download one from")
+        print(" <https://ai6034.mit.edu/labs/key.py>")
+        print("and put it into either your lab's directory, or its parent directory.")
+        sys.exit(1)
+
+    try:
+        server = xmlrpc.client.Server(server_url, allow_none=True)
+        tests = server.get_tests(username, password, lab.__name__)
+    except NotImplementedError: # Solaris Athena doesn't seem to support HTTPS
+        print("Your version of Python doesn't seem to support HTTPS, for")
+        print("secure test submission.  Would you like to downgrade to HTTP?")
+        print("(note that this could theoretically allow a hacker with access")
+        print("to your local network to find your 6.034 password)")
+        answer = input("(Y/n) >>> ")
+        if len(answer) == 0 or answer[0] in "Yy":
+            server = xmlrpc.client.Server(server_url.replace("https", "http"))
+            tests = server.get_tests(username, password, lab.__name__)
+        else:
+            print("Ok, not running your tests.")
+            print("Please try again on another computer.")
+            print("Linux Athena computers are known to support HTTPS,")
+            print("if you use the version of Python in the 'python' locker.")
+            sys.exit(0)
+    except xmlrpc.client.Fault:
+        print("\nError: Either your key.py file is out of date, or online ")
+        print("tests for " + lab.__name__ + " are not currently available.")
+        print("If you believe this may be a mistake, please contact a TA.\n")
+        sys.exit(0)
+
+    # If tests are disabled online, the return value here will be a string
+    if isinstance(tests, str):
+        msg = tests
+        if len(msg) > 0:
+            print("\nError: Online testing is currently disabled for the following reason:")
+            print("> " + tests)
+        else:
+            print("\nError: Online testing is currently disabled.")
+        print("If you believe this may be a mistake, please contact a TA.")
+        return
+
+    ntests = len(tests)
+    ncorrect = 0
+
+    lab = get_lab_module()
+
+    target_dir = get_target_upload_filedir()
+
+    tarball_data = get_tarball_data(target_dir, "lab%s.tar.bz2" % lab.LAB_NUMBER)
+
+    print("Submitting to the 6.034 Webserver...")
+
+    server.submit_code(username, password, lab.__name__, xmlrpc.client.Binary(tarball_data))
+
+    print("Done submitting code.")
+    print("Running test cases...")
+
+    for index, testcode in enumerate(tests):
+        dispindex = index+1
+        summary = test_summary(dispindex, ntests)
+
+        try:
+            answer = run_test(testcode, get_lab_module())
+        except Exception:
+            show_exception(summary, testcode)
+            continue
+
+        correct, expected = server.send_answer(username, password, lab.__name__, testcode[0], type_encode(answer))
+        show_result(summary, testcode, correct, answer, expected, verbosity)
+        if correct: ncorrect += 1
+
+    response = server.status(username, password, lab.__name__)
+    print(response)
+
 
 def make_test_counter_decorator():
     tests = []
@@ -212,4 +367,4 @@ if __name__ == '__main__':
             print("Submitting and testing online...")
             test_online()
         else:
-            print("Local tests passed! Congratulations!")
+            print("Local tests passed! Run 'python3 %s submit' to submit your code and have it graded." % sys.argv[0])
