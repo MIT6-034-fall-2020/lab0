@@ -241,7 +241,7 @@ def is_prime_6_testanswer(val, original_val = None):
 make_test(type = "FUNCTION_ENCODED_ARGS",
           getargs = is_prime_6_getargs,
           testanswer = is_prime_6_testanswer,
-          expected_val = "True",
+          expected_val = "False",
           name = "is_prime")
 
 def primes_up_to_0_getargs():  #TEST 23

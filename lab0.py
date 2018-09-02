@@ -32,7 +32,7 @@ ANSWER_2 = ""
 #### Warmup ####################################################################
 
 def is_even(x):
-    "If x is even, returns True; otherwise returns False"
+    """If x is even, returns True; otherwise returns False"""
     raise NotImplementedError
 
 def decrement(x):
@@ -41,25 +41,25 @@ def decrement(x):
     raise NotImplementedError
 
 def cube(x):
-    "Given a number x, returns its cube (x^3)"
+    """Given a number x, returns its cube (x^3)"""
     raise NotImplementedError
 
 
 #### Iteration #################################################################
 
 def is_prime(x):
-    "Given a number x, returns True if it is prime; otherwise returns False"
+    """Given a number x, returns True if it is prime; otherwise returns False"""
     raise NotImplementedError
 
 def primes_up_to(x):
-    "Given a number x, returns an in-order list of all primes up to and including x"
+    """Given a number x, returns an in-order list of all primes up to and including x"""
     raise NotImplementedError
 
 
 #### Recursion #################################################################
 
 def fibonacci(n):
-    "Given a positive int n, uses recursion to return the nth Fibonacci number."
+    """Given a positive int n, uses recursion to return the nth Fibonacci number."""
     raise NotImplementedError
 
 def expression_depth(expr):
@@ -72,7 +72,7 @@ def expression_depth(expr):
 #### Built-in data types #######################################################
 
 def remove_from_string(string, letters):
-    """Given a string and a list of individual letters, returns a new string
+    """Given an original string and a string of letters, returns a new string
     which is the same as the old one except all occurrences of those letters
     have been removed from it."""
     raise NotImplementedError
@@ -96,7 +96,7 @@ def tally_letters(string):
 #### Functions that return functions ###########################################
 
 def create_multiplier_function(m):
-    "Given a multiplier m, returns a function that multiplies its input by m."
+    """Given a multiplier m, returns a function that multiplies its input by m."""
     raise NotImplementedError
 
 def create_length_comparer_function(check_equal):
@@ -107,7 +107,7 @@ def create_length_comparer_function(check_equal):
     raise NotImplementedError
 
 
-#### Objects and APIs: Copying and modifing objects ############################
+#### Objects and APIs: Copying and modifying objects ############################
 
 def sum_of_coordinates(point):
     """Given a 2D point (represented as a Point object), returns the sum
